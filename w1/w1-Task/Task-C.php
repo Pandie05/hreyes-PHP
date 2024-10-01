@@ -7,11 +7,13 @@
 </head>
 <body>
 
+    <!-- Making Array -->
     <?php
         $animals = array("dog", "cat", "crocodile", "panda", "parrot"); 
     ?>
 
     <ul>
+        <!-- for loop -->
         <?php foreach($animals as $animal): ?>
             <li><?= $animal; ?></li>
         <?php endforeach; ?>
