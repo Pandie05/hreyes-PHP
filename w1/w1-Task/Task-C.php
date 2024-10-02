@@ -7,7 +7,7 @@
 </head>
 <body>
 
-    <!-- Making Array -->
+    <!-- making Array -->
     <?php
         $animals = array("dog", "cat", "crocodile", "panda", "parrot"); 
     ?>
