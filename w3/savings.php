@@ -30,7 +30,7 @@ class SavingsAccount extends Account
 // The code below runs everytime this class loads and 
 // should be commented out after testing.
 
-    $savings = new SavingsAccount('S123', 5000, '03-20-2020');
+    //$savings = new SavingsAccount('S123', 5000, '03-20-2020');
     
     //echo $savings->getAccountDetails();
     

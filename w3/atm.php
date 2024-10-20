@@ -5,13 +5,15 @@
     include 'checking.php';
     include 'savings.php'; 
 
+    $checkingBalance = 1000;
+    $savingsBalance = 5000;
 
-    $checkingBalance = filter_input(INPUT_POST, 'CheckingBalance');
     $checking = new CheckingAccount ('C123', $checkingBalance, '12-20-2019');
-
+    $savings = new SavingsAccount('S123', $savingsBalance, '03-20-2020');
+    
     if (isset ($_POST['withdrawChecking'])) 
     {
-        echo "I pressed the checking withdrawal button";
+        $checkingBalance = $checking->withdrawal(filter_input(INPUT_POST, 'checkingWithdrawAmount'));
     } 
     else if (isset ($_POST['depositChecking'])) 
     {
@@ -19,15 +21,15 @@
     } 
     else if (isset ($_POST['withdrawSavings'])) 
     {
-        echo "I pressed the savings withdrawal button";
+        $savingsBalance = $savings->withdrawal(filter_input(INPUT_POST, 'savingsWithdrawAmount'));
     } 
     else if (isset ($_POST['depositSavings'])) 
     {
-        echo "I pressed the savings deposit button";
+        $savingsBalance = $savings->deposit(filter_input(INPUT_POST, 'savingsDepositAmount'));
     } 
     else{
-        $checkingBalance = 1000000;
-        $checking = new CheckingAccount ('C123', $checkingBalance, '12-20-2019');
+        $checkingBalance = $checking->getBalance();
+        $savingsBalance = $savings->getBalance();
     }
      
 ?>
@@ -79,9 +81,9 @@
                     
                 <div class="accountInner">
                     <h2> <?php echo $checking->getAccountDetails(); ?> </h2>
-                    <input type="text" name="CheckingID" value="" />
-                    <input type="text" name="CheckingBalance" value=<?=$checkingBalance ?> />
-                    <input type="text" name="CheckingStartDate" value="" />
+                    <input type="hidden" name="CheckingID" value=<?=$checking->getAccountID() ?> />
+                    <input type="hidden" name="CheckingBalance" value=<?=$checkingBalance ?> />
+                    <input type="hidden" name="CheckingStartDate" value=<?=$checking->getStartDate() ?> />
                     <input type="text" name="checkingWithdrawAmount" value="" />
                     <input type="submit" name="withdrawChecking" value="Withdraw" />
                 </div>
@@ -96,11 +98,13 @@
                
                 <div class="accountInner">
                     <h2> <?php echo $savings->getAccountDetails(); ?> </h2>
+                    <input type="hidden" name="SavingsID" value=<?=$savings->getAccountID() ?> />
+                    <input type="hidden" name="SavingsBalance" value=<?=$savingsBalance ?> />
+                    <input type="hidden" name="SavingsStartDate" value=<?=$savings->getStartDate() ?> />
                     <input type="text" name="savingsWithdrawAmount" value="" />
                     <input type="submit" name="withdrawSavings" value="Withdraw" />
                 </div>
                 <div class="accountInner">
-
                     <input type="text" name="savingsDepositAmount" value="" />
                     <input type="submit" name="depositSavings" value="Deposit" /><br />
                 </div>
