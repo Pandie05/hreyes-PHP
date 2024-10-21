@@ -7,6 +7,12 @@ class SavingsAccount extends Account
 
 	public function withdrawal($amount) 
 	{
+
+		//if empty, return false
+		if (empty($amount)) {
+			return false;
+		}
+		
 		// write code here. Return true if withdrawal goes through; false otherwise
 		if ($this->balance - $amount >= 0) {
 			$this->balance -= $amount;
@@ -18,6 +24,7 @@ class SavingsAccount extends Account
 
 	public function getAccountDetails() 
 	{
+
 	   // look at how it's defined in other class. You should be able to figure this out ...
 	   $str = "<h2>Savings Account</h2>";
 	   $str .= parent::getAccountDetails();

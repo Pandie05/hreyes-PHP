@@ -25,6 +25,12 @@ abstract class Account
 	
 	public function deposit ($amount) 
 	{
+
+		//if empty, return false
+		if (empty($amount)) {
+			return false;
+		}
+
 		// write code here
 		return $this->balance += $amount;
 
