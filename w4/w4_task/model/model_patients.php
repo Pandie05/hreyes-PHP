@@ -15,17 +15,30 @@ function getPatients(){
     return $results;
 }
 
+function getPatientById($id) {
+    global $db;
+
+    $stmt = $db->prepare("SELECT * FROM patients WHERE id = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 function addPatient($tpatientFirstName, $tpatientLastName, $tpatientMarried, $tpatientBirthDate){
     global $db;
 
     $result = "";
 
-    //convert the date to the correct format
-    $date = DateTime::createFromFormat('m/d/Y', $tpatientBirthDate);
+   
+    $date = DateTime::createFromFormat('Y-m-d', $tpatientBirthDate);
     if ($date === false) {
-        return "invalid format";
+        return "Invalid date format";
     }
     $formattedDate = $date->format('Y-m-d');
+
+    
+    $marriedStatus = ($tpatientMarried == 'yes') ? 1 : 0;
 
     $sql = "INSERT INTO patients (patientFirstName, patientLastName, patientMarried, patientBirthDate) 
             VALUES (:f, :l, :m, :b)";
@@ -35,7 +48,7 @@ function addPatient($tpatientFirstName, $tpatientLastName, $tpatientMarried, $tp
     $binds = array(
         ":f" => $tpatientFirstName,
         ":l" => $tpatientLastName,
-        ":m" => $tpatientMarried,
+        ":m" => $marriedStatus,
         ":b" => $formattedDate
     );
 
@@ -44,5 +57,41 @@ function addPatient($tpatientFirstName, $tpatientLastName, $tpatientMarried, $tp
     }
 
     return $result;
+}
+
+function updatePatient($id, $firstName, $lastName, $married, $birthDate) {
+    global $db;
+
+    //make married an int
+    $marriedStatus = ($married == 'yes') ? 1 : 0;
+
+    //convert da date bc its better
+    $date = DateTime::createFromFormat('Y-m-d', $birthDate);
+    if ($date === false) {
+        return "Invalid date format";
+    }
+    $formattedDate = $date->format('Y-m-d');
+
+    $sql = "UPDATE patients SET patientFirstName = :f, patientLastName = :l, patientMarried = :m, patientBirthDate = :b WHERE id = :id";
+    $stmt = $db->prepare($sql);
+
+    $binds = array(
+        ":id" => $id,
+        ":f" => $firstName,
+        ":l" => $lastName,
+        ":m" => $marriedStatus,
+        ":b" => $formattedDate
+    );
+
+    return $stmt->execute($binds);
+}
+
+function deletePatient($id) {
+    global $db;
+
+    $stmt = $db->prepare("DELETE FROM patients WHERE id = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+    return $stmt->execute();
 }
 ?>
