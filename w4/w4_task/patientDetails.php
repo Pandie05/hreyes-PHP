@@ -51,36 +51,54 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <a class='mar12' href="viewPatients.php">Back to View All Patients</a>
         <h2 class='mar12'><?= $patient['id'] ? 'Edit' : 'Add' ?> Patient</h2>
         <form name="patients" method="post">
+
             <input type="hidden" name="id" value="<?= htmlspecialchars($patient['id']); ?>">
+
             <div class="form-group">
                 <label for="firstName">First Name</label>
                 <input type="text" class="form-control" id="firstName" name="firstName" value="<?= htmlspecialchars($patient['patientFirstName']); ?>">
             </div>
+
             <div class="form-group">
                 <label for="lastName">Last Name</label>
                 <input type="text" class="form-control" id="lastName" name="lastName" value="<?= htmlspecialchars($patient['patientLastName']); ?>">
             </div>
+
             <div class="form-group">
+
                 <label for="married">Married</label>
+
                 <select class="form-control" id="married" name="married">
+
                     <option value="yes" <?= $patient['patientMarried'] == 'yes' ? 'selected' : ''; ?>>Yes</option>
                     <option value="no" <?= $patient['patientMarried'] == 'no' ? 'selected' : ''; ?>>No</option>
+
                 </select>
             </div>
+
             <div class="form-group">
                 <label for="birthDate">Birth Date</label>
                 <input type="date" class="form-control" id="birthDate" name="birthDate" value="<?= htmlspecialchars($patient['patientBirthDate']); ?>">
             </div>
+
             <button type="submit" name="storePatient" class="btn btn-primary"><?= $patient['id'] ? 'Update' : 'Add' ?> Patient</button>
+
             <?php if ($patient['id']): ?>
+
                 <button type="submit" name="deletePatient" class="btn btn-danger">Delete Patient</button>
             <?php endif; ?>
+
         </form>
+
         <?php if ($error): ?>
+
             <div class="alert alert-danger">
+                
                 <ul><?= $error ?></ul>
+                
             </div>
         <?php endif; ?>
+
     </div>
 </div>
 

@@ -2,35 +2,51 @@
 
 include (__DIR__ . '/db.php');
 
-function getCustomer() {
+function getCustomers(){
     global $db;
 
     $results = [];
 
-    $sql = "SELECT * FROM feedback";
+    $stmt = $db->prepare("SELECT * FROM feedback");
 
-    $stmt = $db->prepare($sql);
-
-    if ($stmt->execute() && $stmt->rowCount() > 0) {
+    if($stmt->execute() && $stmt->rowCount() > 0){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
     return $results;
 }
 
-function addCustomer($age, $gender, $DOV, $location, $rating, $cashier, $FT, $OO, $comments) {
+function getCustomerById($id) {
+    global $db;
+
+    $stmt = $db->prepare("SELECT * FROM feedback WHERE id = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function addCustomer($age, $gender, $date_of_visit, $location, $rating, $cashier, $fitting_room, $online_order, $comments) {
     global $db;
 
     $result = "";
 
-    $date = DateTime::createFromFormat('Y-m-d', $DOV);
+    // Validate and sanitize inputs
+    $age = filter_var($age, FILTER_VALIDATE_INT);
+    $gender = strtolower($gender) == 'male' ? 1 : (strtolower($gender) == 'female' ? 2 : 3);
+    $location = filter_var($location, FILTER_SANITIZE_STRING);
+    $rating = filter_var($rating, FILTER_VALIDATE_INT);
+    $cashier = filter_var($cashier, FILTER_VALIDATE_INT);
+    $fitting_room = filter_var($fitting_room, FILTER_VALIDATE_INT);
+    $online_order = filter_var($online_order, FILTER_VALIDATE_INT);
+    $comments = filter_var($comments, FILTER_SANITIZE_STRING);
+
+    $date = DateTime::createFromFormat('Y-m-d', $date_of_visit);
     if ($date === false) {
         return "Invalid date format";
     }
     $formattedDate = $date->format('Y-m-d');
     
-    $sql = "INSERT INTO feedback (age, gender, DOV, location, rating, cashier, FT, OO, comments) 
-
+    $sql = "INSERT INTO feedback (age, gender, date_of_visit, location, rating, cashier, fitting_room, online_order, comments) 
         VALUES (:a, :g, :d, :l, :r, :c, :f, :o, :cm)";
 
     $stmt = $db->prepare($sql);
@@ -42,8 +58,8 @@ function addCustomer($age, $gender, $DOV, $location, $rating, $cashier, $FT, $OO
         ":l" => $location,
         ":r" => $rating,
         ":c" => $cashier,
-        ":f" => $FT,
-        ":o" => $OO,
+        ":f" => $fitting_room,
+        ":o" => $online_order,
         ":cm" => $comments
     );
 
@@ -52,5 +68,52 @@ function addCustomer($age, $gender, $DOV, $location, $rating, $cashier, $FT, $OO
     }
 
     return $result;
-
 }
+
+function updateCustomer($id, $age, $gender, $date_of_visit, $location, $rating, $cashier, $fitting_room, $online_order, $comments) {
+    global $db;
+
+    // Validate and sanitize inputs
+    $age = filter_var($age, FILTER_VALIDATE_INT);
+    $gender = strtolower($gender) == 'male' ? 1 : (strtolower($gender) == 'female' ? 2 : 3);
+    $location = filter_var($location, FILTER_SANITIZE_STRING);
+    $rating = filter_var($rating, FILTER_VALIDATE_INT);
+    $cashier = filter_var($cashier, FILTER_VALIDATE_INT);
+    $fitting_room = filter_var($fitting_room, FILTER_VALIDATE_INT);
+    $online_order = filter_var($online_order, FILTER_VALIDATE_INT);
+    $comments = filter_var($comments, FILTER_SANITIZE_STRING);
+
+    $date = DateTime::createFromFormat('Y-m-d', $date_of_visit);
+    if ($date === false) {
+        return "Invalid date format";
+    }
+    $formattedDate = $date->format('Y-m-d');
+
+    $sql = "UPDATE feedback SET age = :a, gender = :g, date_of_visit = :d, location = :l, rating = :r, cashier = :c, fitting_room = :f, online_order = :o, comments = :cm WHERE id = :id";
+    $stmt = $db->prepare($sql);
+
+    $binds = array(
+        ":id" => $id,
+        ":a" => $age,
+        ":g" => $gender,
+        ":d" => $formattedDate,
+        ":l" => $location,
+        ":r" => $rating,
+        ":c" => $cashier,
+        ":f" => $fitting_room,
+        ":o" => $online_order,
+        ":cm" => $comments
+    );
+
+    return $stmt->execute($binds);
+}
+
+function deleteCustomer($id) {
+    global $db;
+
+    $stmt = $db->prepare("DELETE FROM feedback WHERE id = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+    return $stmt->execute();
+}
+?>
