@@ -5,6 +5,7 @@
         <title>Customer Reviews</title>
 
         <link rel="stylesheet" type="text/css" href="styles/head_foot.css">
+        <link rel="stylesheet" type="text/css" href="styles/add.css">
 
     </head>
     <body>
