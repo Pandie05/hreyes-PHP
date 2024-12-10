@@ -3,12 +3,7 @@
             
             <div> </div>
 
-            <h1>&copy; Hendry Reyes</h1>
-
-            <ul>
-                <li><a href="">icon</a></li>
-                <li><a href="">icon</a></li>
-            </ul>
+            <h3>&copy; Hendry Reyes</h3>
 
         </footer>
     </body>

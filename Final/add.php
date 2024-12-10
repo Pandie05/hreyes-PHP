@@ -37,10 +37,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($gender == "") $error .= "<li>Please provide a gender</li>";
         if ($date_of_visit == "") $error .= "<li>Please provide a date of visit</li>";
         if ($location == "") $error .= "<li>Please provide a location</li>";
-        if ($rating === false) $error .= "<li>Please provide a valid rating</li>";
-        if ($cashier === false) $error .= "<li>Please provide a valid cashier rating</li>";
-        if ($fitting_room === false) $error .= "<li>Please provide a valid fitting room rating</li>";
-        if ($online_order === false) $error .= "<li>Please provide a valid online order rating</li>";
+        if ($rating === false || $rating > 5) $error .= "<li>Please provide a valid rating (1-5)</li>";
+        if ($cashier === false || $cashier > 5) $error .= "<li>Please provide a valid cashier rating (1-5)</li>";
+        if ($fitting_room === false || $fitting_room > 5) $error .= "<li>Please provide a valid fitting room rating (1-5)</li>";
+        if ($online_order === false || $online_order > 5) $error .= "<li>Please provide a valid online order rating (1-5)</li>";
 
         // Convert gender to integer
         $gender = strtolower($gender) == 'male' ? 1 : (strtolower($gender) == 'female' ? 2 : 3);
@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-group">
         <label for="age">Age: </label>
-        <input type="number" class="form-control" id="age" name="age" value="<?= htmlspecialchars($customer['age']); ?>">
+        <input type="number" class="form-control" id="age" name="age" value="<?= htmlspecialchars($customer['age']); ?> " min="1">
     </div>
 
     <div class="form-group">
@@ -91,22 +91,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="form-group">
         <label for="rating">Rating: </label>
-        <input type="number" class="form-control" id="rating" name="rating" value="<?= htmlspecialchars($customer['rating']); ?>">
+        <input type="number" class="form-control" id="rating" name="rating" value="<?= htmlspecialchars($customer['rating']); ?>" min="1" max="5">
     </div>
 
     <div class="form-group">
         <label for="cashier">Cashier: </label>
-        <input type="number" class="form-control" id="cashier" name="cashier" value="<?= htmlspecialchars($customer['cashier']); ?>">
+        <input type="number" class="form-control" id="cashier" name="cashier" value="<?= htmlspecialchars($customer['cashier']); ?>" min="1" max="5">
     </div>
 
     <div class="form-group">
         <label for="fitting_room">Fitting Room: </label>
-        <input type="number" class="form-control" id="fitting_room" name="fitting_room" value="<?= htmlspecialchars($customer['fitting_room']); ?>">
+        <input type="number" class="form-control" id="fitting_room" name="fitting_room" value="<?= htmlspecialchars($customer['fitting_room']); ?>" min="1" max="5">
     </div>
 
     <div class="form-group">
         <label for="online_order">Online Order: </label>
-        <input type="number" class="form-control" id="online_order" name="online_order" value="<?= htmlspecialchars($customer['online_order']); ?>">
+        <input type="number" class="form-control" id="online_order" name="online_order" value="<?= htmlspecialchars($customer['online_order']); ?>" min="1" max="5">
     </div>
 
     <div class="form-group">

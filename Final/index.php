@@ -1,17 +1,15 @@
 <?php
 include 'includes/header.php';
-
 include 'model/model_customers.php';
 
 $reviews = getCustomers();
-
 ?>
 
 <div class="container">
     <div class="col-sm-12">
         <h1>Reviews</h1>
 
-        <a href="add.php">Add New Review</a>
+        <a href="add.php" class="btn btn-primary">Add New Review</a>
 
         <table class="table table-striped">
             <thead>
@@ -24,21 +22,23 @@ $reviews = getCustomers();
                     <th>Fitting Room</th>
                     <th>Online Order</th>
                     <th>Comments</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($reviews as $review): ?>
                     <tr>
-                        <td><?= $review['id']; ?></td>
-                        <td><?= $review['date_of_visit']; ?></td>
-                        <td><?= $review['location']; ?></td> 
-                        <td><?= $review['rating']; ?></td> 
-                        <td><?= $review['cashier']; ?></td>
-                        <td><?= $review['fitting_room']; ?></td>
-                        <td><?= $review['online_order']; ?></td>
-                        <td><?= $review['comments']; ?></td>
+                        <td><?= htmlspecialchars($review['id']); ?></td>
+                        <td><?= htmlspecialchars($review['date_of_visit']); ?></td>
+                        <td><?= htmlspecialchars($review['location']); ?></td> 
+                        <td><?= htmlspecialchars($review['rating']) . '/5'; ?></td> 
+                        <td><?= htmlspecialchars($review['cashier']). '/5'; ?></td>
+                        <td><?= htmlspecialchars($review['fitting_room']). '/5'; ?></td>
+                        <td><?= htmlspecialchars($review['online_order']). '/5'; ?></td>
+                        <td><?= htmlspecialchars($review['comments']); ?></td>
                         <td>
-                            <a href="add.php?id=<?= $review['id']; ?>" class="btn btn-primary">Edit</a>
+                            <a href="edit.php?id=<?= $review['id']; ?>" class="btn btn-primary">Update</a>
+                            <a href="delete.php?id=<?= $review['id']; ?>" class="btn btn-danger">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -47,8 +47,4 @@ $reviews = getCustomers();
     </div>
 </div>
 
-
-
-<?php
-include 'includes/footer.php';
-?>
+<?php include 'includes/footer.php'; ?>

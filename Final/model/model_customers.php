@@ -73,7 +73,7 @@ function addCustomer($age, $gender, $date_of_visit, $location, $rating, $cashier
 function updateCustomer($id, $age, $gender, $date_of_visit, $location, $rating, $cashier, $fitting_room, $online_order, $comments) {
     global $db;
 
-    // Validate and sanitize inputs
+    
     $age = filter_var($age, FILTER_VALIDATE_INT);
     $gender = strtolower($gender) == 'male' ? 1 : (strtolower($gender) == 'female' ? 2 : 3);
     $location = filter_var($location, FILTER_SANITIZE_STRING);

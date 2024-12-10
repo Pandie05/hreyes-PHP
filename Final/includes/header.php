@@ -6,6 +6,7 @@
 
         <link rel="stylesheet" type="text/css" href="styles/head_foot.css">
         <link rel="stylesheet" type="text/css" href="styles/add.css">
+        <link rel="stylesheet" type="text/css" href="styles/styles.css">
 
     </head>
     <body>
@@ -17,7 +18,6 @@
             <nav>
                 <ul>
                     <li><a href="add.php">Add</a></li>
-                    <li><a href="manage.php">Manage</a></li>
                 </ul>
             </nav>
 
